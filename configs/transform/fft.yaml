@@ -1,0 +1,4 @@
+name: fft
+_target_: src.data.transforms.signal_representations.fft
+
+_partial_: True

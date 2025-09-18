@@ -1,0 +1,73 @@
+# @package _global_
+
+defaults:
+  - /dataset@ottawa: ottawa
+  - override /transform: time
+  - override /dataset/split_function@ottawa.split_function: ottawa
+
+datasets:
+  - ${ottawa}
+
+project: Data-Leakage-Paper-FinalExps
+
+ottawa:
+  split_function:
+    _target_: src.data.data_splits.ottawa_leakage
+    _partial_: True
+    easy_split: False
+    segment_leakage: True
+    run: ${run}
+
+train_pct: 0.8
+test_pct: 0.2
+easy_split: False
+
+load_model: True
+model_path: /home/joao-paulo-vieira/mestrado/leakage_paper_experiments/data/artifacts/models/OttawaLeakage_Time_EasySplit_False_Train80pct_run_${run}/last.ckpt
+
+lr: 1e-4
+batch_size: 128
+num_class: 4
+
+run: 0
+rep: ${transform.name}
+experiment: OttawaLeakage_Time_Segment_Train80pct_run_${run}
+mode: Leakage_Exp_${easy_split}_Segment
+
+use_fixed_segments: False
+deterministic: False
+
+segment_length: 42000
+segment_length_eval: 42000
+overlap_pct: 0
+overlap_pct_eval: 0
+segmentation_strategy: full_signal
+segmentation_strategy_eval: overlap
+dataset_multiplier: 20
+
+seed: 0
+random_state: 0
+
+std: 0.7
+crop_size: 42000
+
+epochs: 50
+
+augmentations:
+  pre_repr:
+    train:
+      _target_: torchvision.transforms.v2.Compose
+      transforms:
+        - _target_: src.data.transforms.augmentations.RandomCrop1D
+          crop_size: ${crop_size}
+        - _target_: src.data.transforms.augmentations.RandomGainOnFFT
+          mean: 1
+          std: ${std}
+    test: null
+  post_repr: null
+
+
+hydra:
+  sweeper:
+    params:
+      run: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9

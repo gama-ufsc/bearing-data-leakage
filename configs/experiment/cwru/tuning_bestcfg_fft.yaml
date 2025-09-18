@@ -1,0 +1,73 @@
+# @package _global_
+
+# Ablation EXP: no leakage, adds only HP0 to test
+
+defaults:
+  - /dataset@cwru: cwru
+  - override /dataset/split_function@cwru.split_function: hp_tuning_cwru
+  - override /transform: fft
+
+project: Data-Leakage-Paper-FinalExps
+
+datasets:
+  - ${cwru}
+
+rep: ${transform.name}
+
+cwru:
+  split_function:
+    _target_: src.data.data_splits.cwru_optimization_split
+    _partial_: True
+    test_fold: ${test_fold}
+    train_side: ${train_side}
+    withHP0: True
+
+test_fold: 1
+train_side: FE
+
+lr: 1e-3
+batch_size: 64
+num_class: 3
+
+run: 0
+experiment: cwru_tuning_rcrg_bestparams_${rep}_ourMTD_norm_${normalization_strategy}_lr_${lr}_bs_${batch_size}_testfold_${test_fold}_side_${train_side}
+mode: rcrg_cwru_tuning_${rep}
+
+seed: 0
+random_state: 0
+deterministic: False
+
+segment_length: 12000
+segmentation_strategy: full_signal
+dataset_multiplier: 5
+overlap_pct: 0
+
+segment_length_eval: 12000
+overlap_pct_eval: 0
+segmentation_strategy_eval: overlap
+
+epochs: 30
+std: 0.3
+crop_size: 12000
+
+augmentations:
+  pre_repr:
+    train:
+      _target_: torchvision.transforms.v2.Compose
+      transforms:
+        - _target_: src.data.transforms.augmentations.RandomCrop1D
+          crop_size: ${crop_size}
+        - _target_: src.data.transforms.augmentations.RandomGainOnFFT
+          mean: 1
+          std: ${std}
+    test: null
+  post_repr: null
+
+hydra:
+  sweeper:
+    params:
+      normalization_strategy: global, entry-wise, none
+      lr: 1e-2, 1e-3, 1e-4, 1e-5
+      batch_size: 32, 64, 128, 256
+      test_fold: 1, 2, 3
+      train_side: FE, DE

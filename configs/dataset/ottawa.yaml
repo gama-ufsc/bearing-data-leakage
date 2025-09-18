@@ -1,0 +1,20 @@
+_target_: src.data.pydantic_models.BearingDataset
+
+defaults:
+  - split_function: null
+
+
+name: Ottawa
+add_signal_function:
+  _target_: src.utils.add_signal_data.add_signal_data_ottawa
+  _partial_: True
+signal_column: vibration
+label_column:
+  - inner
+  - outer
+  - ball
+  - cage
+preprocess_function: null
+  #_target_: src.data.preprocess.preprocess_ottawa
+  #_partial_: True
+  #resample: False

@@ -1,0 +1,4 @@
+_target_: src.data.data_splits.split_cwru_proposed
+_partial_: True
+random_state: ${random_state}
+normal_train_side: ${train_side}

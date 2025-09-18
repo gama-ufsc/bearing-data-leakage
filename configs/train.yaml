@@ -1,0 +1,86 @@
+defaults:
+  - _self_
+  - dataset@paderborn: paderborn
+  - transform: time
+  - modelmodule: multilabel_wdcnn
+  - trainer: gpu
+  - hydra: default
+  - paths: default
+  - collate: default
+
+# Hamilton param
+pipeline: deep_learning
+mode: tuning
+
+# Datasets
+datasets:
+  - ${paderborn}
+
+which_model: last
+
+classification_method: multilabel
+# Split params in default dataset config
+row: 0
+condition: 0
+test_size: 0.2
+random_state: 42 # Split random state
+conditions: [0, 1, 2, 3]
+
+# Pytorch custom dataset params
+# transform (use defaults list)
+# normalization
+normalization_function:
+  _target_: src.data.transforms.scaling.std_scaling
+  _partial_: True
+normalization_strategy: global
+channels_output: 1
+segment_length: 5120 # 11500
+overlap_pct: 0.97
+use_fixed_segments: True
+dataset_multiplier: 1
+
+segment_length_eval: 5120 # 11500
+overlap_pct_eval: 0.97
+segmentation_strategy_eval: overlap
+segmentation_strategy: overlap
+
+augmentation:
+  pre_repr: null
+  post_repr: null
+
+# Trainer params
+epochs: 10
+
+# Pytorch DataLoader params
+batch_size: 64
+num_workers: 0
+
+# Model parameters (WDCNN)
+num_class: 2
+pretrained: False
+
+# Optimizer parameters (Adam)
+lr : 1e-4
+
+# ModelModule parameters
+project: Data-Leakage-Paper
+experiment: test
+seed: 42
+save_outputs: True
+pretrain_epochs: null
+tags:
+  - Leakage paper
+
+load_model: False
+# model_path (use model path to .ckpt file when load_model is True)
+
+run_name: ${experiment}
+
+## a few data augmentation parameters that are logged in wandb so we can group based on seed
+std: 0
+min_crop_size: 4096
+crop_size: 0
+
+deterministic: True
+run_offline: False
+ensembled_eval: False

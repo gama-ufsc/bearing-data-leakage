@@ -1,0 +1,18 @@
+_target_: src.data.pydantic_models.BearingDataset
+
+defaults:
+  - split_function: null
+
+
+name: Paderborn
+add_signal_function:
+  _target_: src.utils.add_signal_data.add_signal_data_paderborn
+  _partial_: True
+  fast_mode: True
+signal_column: vibration
+label_column:
+  - inner
+  - outer
+preprocess_function:
+  _target_: src.data.preprocess.preprocess_paderborn
+  _partial_: True

@@ -1,0 +1,210 @@
+_target_: sklearn.pipeline.Pipeline
+steps:
+- - time_domain
+  - _target_: src.data.feature_engineering.transforms.create_transform
+    metrics:
+      - func:
+          _target_: feature_extraction.metrics.statistics.rms
+          _partial_: true
+      - func:
+          _target_: feature_extraction.metrics.statistics.pk_pk
+          _partial_: true
+        name: pk-pk
+      - func:
+          _target_: feature_extraction.metrics.statistics.kurtosis
+          _partial_: true
+        name: kurt
+      - func:
+          _target_: feature_extraction.metrics.statistics.skewness
+          _partial_: true
+      - func:
+          _target_: feature_extraction.metrics.statistics.crest_factor
+          _partial_: true
+        name: fc
+      - func:
+          _target_: feature_extraction.metrics.statistics.shape_factor
+          _partial_: true
+      - func:
+          _target_: feature_extraction.metrics.statistics.impulse_factor
+          _partial_: true
+      - func:
+          _target_: feature_extraction.metrics.statistics.clearance_factor
+          _partial_: true
+      - func:
+          _target_: feature_extraction.metrics.statistics.crest_factor_plus
+          _partial_: true
+        name: fcPlus
+    representation:
+      name: acceleration
+      func:
+        _target_: feature_extraction.signal_representations.bandpass_filter.bandpass_filter_transform
+        _partial_: true
+      params:
+        signal_column: vibration
+        sampling_rate_column: fs
+        cutoff: null
+- - fft
+  - _target_: src.data.feature_engineering.transforms.create_transform
+    metrics:
+      - func:
+          _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
+          _partial_: true
+        name: rpm
+        params:
+          harmonics: [0.5,1,1.5, 2,2.5, 3]
+          rpm: True
+          feature_identifier: X
+          X_columns: [rotational_speed]
+    representation:
+      name: acceleration/fft
+      func:
+        _target_: feature_extraction.signal_representations.fft.fft_transform
+        _partial_: true
+      params:
+        signal_column: vibration
+        sampling_rate_column: fs
+        cutoff: null
+- - Envelope_50_1000
+  - _target_: src.data.feature_engineering.transforms.create_transform
+    metrics:
+      - name: bpfo
+        func:
+          _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
+          _partial_: true
+        params:
+          harmonics: [1, 2, 3, 4, 5]
+          rpm: True
+          feature_identifier: X
+          X_columns: [rotational_speed, bpfo]
+      - name: bpfi
+        func:
+          _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
+          _partial_: true
+        params:
+          harmonics: [1, 2, 3, 4, 5]
+          rpm: True
+          feature_identifier: X
+          X_columns: [rotational_speed, bpfi]
+      - name: bsf
+        func:
+          _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
+          _partial_: true
+        params:
+          harmonics: [1, 2, 3, 4, 5]
+          rpm: True
+          feature_identifier: X
+          X_columns: [rotational_speed, bsf]
+      - name: ftf
+        func:
+          _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
+          _partial_: true
+        params:
+          harmonics: [1, 2, 3, 4, 5]
+          rpm: True
+          feature_identifier: X
+          X_columns: [rotational_speed, ftf]
+    representation:
+      name: envelope/spectralPeak
+      func:
+        _target_: feature_extraction.signal_representations.envelope.get_envelope
+        _partial_: true
+      params:
+        signal_column: vibration
+        sampling_rate_column: fs
+        cutoff: [50, 1000]
+- - Envelope_50_5000
+  - _target_: src.data.feature_engineering.transforms.create_transform
+    metrics:
+      - name: bpfo
+        func:
+          _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
+          _partial_: true
+        params:
+          harmonics: [1, 2, 3, 4, 5]
+          rpm: True
+          feature_identifier: X
+          X_columns: [rotational_speed, bpfo]
+      - name: bpfi
+        func:
+          _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
+          _partial_: true
+        params:
+          harmonics: [1, 2, 3, 4, 5]
+          rpm: True
+          feature_identifier: X
+          X_columns: [rotational_speed, bpfi]
+      - name: bsf
+        func:
+          _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
+          _partial_: true
+        params:
+          harmonics: [1, 2, 3, 4, 5]
+    #      rpm: True
+    #      feature_identifier: X
+    #      X_columns: [rotational_speed, bsf]
+    #  - name: ftf
+    #    func:
+    #      _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
+    #      _partial_: true
+    #    params:
+    #      harmonics: [1, 2, 3, 4, 5]
+    #      rpm: True
+    #      feature_identifier: X
+    #      X_columns: [rotational_speed, ftf]
+    representation:
+      name: envelope/spectralPeak
+      func:
+        _target_: feature_extraction.signal_representations.envelope.get_envelope
+        _partial_: true
+      params:
+        signal_column: vibration
+        sampling_rate_column: fs
+        cutoff: [50, 5000]
+- - Envelope_500_10000
+  - _target_: src.data.feature_engineering.transforms.create_transform
+    metrics:
+      - name: bpfo
+        func:
+          _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
+          _partial_: true
+        params:
+          harmonics: [1, 2, 3, 4, 5]
+          rpm: True
+          feature_identifier: X
+          X_columns: [rotational_speed, bpfo]
+      - name: bpfi
+        func:
+          _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
+          _partial_: true
+        params:
+          harmonics: [1, 2, 3, 4, 5]
+          rpm: True
+          feature_identifier: X
+          X_columns: [rotational_speed, bpfi]
+    #  - name: bsf
+    #    func:
+    #     _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
+    #      _partial_: true
+    #    params:
+    #      harmonics: [1, 2, 3, 4, 5]
+    #      rpm: True
+    #      feature_identifier: X
+    #      X_columns: [rotational_speed, bsf]
+    #  - name: ftf
+    #    func:
+    #      _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
+    #      _partial_: true
+    #    params:
+    #      harmonics: [1, 2, 3, 4, 5]
+    #      rpm: True
+    #      feature_identifier: X
+    #      X_columns: [rotational_speed, ftf]
+    representation:
+      name: envelope/spectralPeak
+      func:
+        _target_: feature_extraction.signal_representations.envelope.get_envelope
+        _partial_: true
+      params:
+        signal_column: vibration
+        sampling_rate_column: fs
+        cutoff: [500, 10000]

@@ -1,0 +1,7 @@
+eval_metric:
+  _target_: torchmetrics.classification.AUROC
+  task: binary
+
+eval_metric_name: AUROC
+
+additional_metrics: null

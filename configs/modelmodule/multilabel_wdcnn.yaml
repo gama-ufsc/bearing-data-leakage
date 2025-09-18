@@ -1,0 +1,36 @@
+_target_: src.models.modelmodule.BaseModelModule
+
+defaults:
+  - model: wdcnn
+  - metrics_params: multilabel
+
+optimizer:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: ${lr}
+
+project: ${project}
+experiment: ${experiment}
+seed: ${seed}
+save_outputs: ${save_outputs}
+pretrain_epochs: ${pretrain_epochs}
+ensembled_eval: ${ensembled_eval}
+classification_method: ${classification_method}
+
+cfg_dict:
+  model: wdcnn
+  lr: ${lr}
+  batch_size: ${batch_size}
+  epochs: ${epochs}
+  segment_length: ${segment_length}
+  std: ${std}
+  min_crop_size: ${min_crop_size}
+  crop_size: ${crop_size}
+  augmentations: ${augmentation}
+  experiment_hparams:
+   - wdcnn
+   - ${lr}
+   - ${batch_size}
+   - ${mode}
+   - ${std}
+  overlap_pct: ${overlap_pct}

@@ -1,0 +1,91 @@
+# @package _global_
+
+defaults:
+  - override /dataset/split_function@paderborn.split_function: paderborn_evaluation_2x3split
+  - override /transform: envelope
+  - override /modelmodule/model/backbone: wdcnn
+
+### best hparams: 1e-3 32 entry-wise, 2x3 split
+
+lr: 1e-2
+batch_size: 32
+normalization_strategy: none
+
+cutoff: [500, 10000]
+
+transform:
+  name: envelope
+  _target_: src.data.transforms.signal_representations.get_envelope
+  _partial_: True
+  cutoff: ${cutoff}
+  sampling_rate: 64000
+
+project: Data-Leakage-Paper-FinalExps
+
+modelmodule:
+  model:
+    backbone:
+      _target_: src.models.components.backbone.wdcnn.WDCNN
+      in_channels: 1
+      n_class: ${num_class}
+      pretrained: False
+      apply_dropout: True
+      dropout_rate: ${dropout_rate}
+
+paderborn:
+  split_function:
+    _target_: src.data.data_splits.train_test_split_proposed
+    _partial_: True
+    run: ${run}
+    use_artificial: False
+    save_combination: False
+    use_combined: False
+    no_val: True
+
+dropout_rate: 0.9
+rep: ${transform.name}
+
+experiment: paderborn_diversity_2x3_run${run}
+mode: rcrg_paderborn_eval_2x3_${crop_size}_${rep}_std_${std}_lr_${lr}_bs_${batch_size}
+
+seed: 0
+random_state: 0
+run: 0
+
+use_fixed_segments: False
+deterministic: False
+
+segment_length: 64000
+segment_length_eval: 64000
+overlap_pct: 0
+overlap_pct_eval: 0
+segmentation_strategy: full_signal
+segmentation_strategy_eval: overlap
+dataset_multiplier: 3
+num_workers: 5
+
+
+std: 0.3
+crop_size: 64000
+
+epochs: 30
+
+augmentations:
+  pre_repr:
+    train:
+      _target_: torchvision.transforms.v2.Compose
+      transforms:
+        - _target_: src.data.transforms.augmentations.RandomCrop1D
+          crop_size: ${crop_size}
+        - _target_: src.data.transforms.augmentations.RandomGainOnFFT
+          mean: 1
+          std: ${std}
+    test: null
+  post_repr: null
+
+
+hydra:
+  sweeper:
+    params:
+      #run: 0
+      run: 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104

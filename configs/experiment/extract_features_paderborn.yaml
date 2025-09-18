@@ -1,0 +1,10 @@
+# @package _global_
+
+defaults:
+  - override /feature_pipeline: paderborn_features
+
+resample: true
+segment: true
+
+paderborn:
+  split_function: null

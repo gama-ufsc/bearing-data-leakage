@@ -1,0 +1,82 @@
+_target_: sklearn.pipeline.Pipeline
+steps:
+- - time_domain
+  - _target_: src.data.feature_engineering.transforms.create_transform
+    metrics:
+      - func:
+          _target_: feature_extraction.metrics.statistics.rms
+          _partial_: true
+      - func:
+          _target_: feature_extraction.metrics.statistics.pk_pk
+          _partial_: true
+        name: pk-pk
+      - func:
+          _target_: feature_extraction.metrics.statistics.kurtosis
+          _partial_: true
+        name: kurt
+      - func:
+          _target_: feature_extraction.metrics.statistics.skewness
+          _partial_: true
+      - func:
+          _target_: feature_extraction.metrics.statistics.crest_factor
+          _partial_: true
+        name: fc
+      - func:
+          _target_: feature_extraction.metrics.statistics.shape_factor
+          _partial_: true
+      - func:
+          _target_: feature_extraction.metrics.statistics.impulse_factor
+          _partial_: true
+      - func:
+          _target_: feature_extraction.metrics.statistics.clearance_factor
+          _partial_: true
+      - func:
+          _target_: feature_extraction.metrics.statistics.variance
+          _partial_: true
+      - func:
+          _target_: feature_extraction.metrics.statistics.line_integral
+          _partial_: true
+      - func:
+          _target_: feature_extraction.metrics.statistics.peak_value
+          _partial_: true
+      - func:
+          _target_: feature_extraction.metrics.statistics.shannon_entropy
+          _partial_: true
+    representation:
+      name: time_domain_raw
+      func:
+        _target_: feature_extraction.signal_representations.bandpass_filter.bandpass_filter_transform
+        _partial_: true
+      params:
+        signal_column: vibration
+        sampling_rate_column: fs
+        cutoff: null
+- - fft
+  - _target_: src.data.feature_engineering.transforms.create_transform
+    metrics:
+      - func:
+          _target_: feature_extraction.metrics.frequency_domain.spectral_peak
+          _partial_: true
+      - func:
+          _target_: feature_extraction.metrics.frequency_domain.spectral_energy
+          _partial_: true
+      - func:
+          _target_: feature_extraction.metrics.frequency_domain.spectral_sum
+          _partial_: true
+      # PSD
+    representation:
+      name: frequency_domain_raw
+      func:
+        _target_: feature_extraction.signal_representations.fft.fft_transform
+        _partial_: true
+      params:
+        signal_column: vibration
+        sampling_rate_column: fs
+        cutoff: null
+- - wavelet
+  - _target_: sklearn.preprocessing.FunctionTransformer
+    func:
+      _target_: src.data.feature_engineering.features_wavelet.wavelet_features_paderborn
+      _partial_: true
+      signal_column: vibration
+      additional_name: raw_

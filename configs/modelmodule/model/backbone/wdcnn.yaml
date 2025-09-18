@@ -1,0 +1,4 @@
+_target_: src.models.components.backbone.wdcnn.WDCNN
+in_channels: 1
+n_class: ${num_class}
+pretrained: ${pretrained}

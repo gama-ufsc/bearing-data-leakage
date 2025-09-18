@@ -1,0 +1,35 @@
+_target_: lightning.Trainer
+
+defaults:
+  - logger: wandb
+
+#callbacks:
+#  - _target_: src.models.components.callbacks.model_checkpoint.CustomCheckpoint
+#    dirpath: ${paths.data_dir}/artifacts/models/${run_name}
+#    save_last: True
+#    save_top_k: 0
+
+default_root_dir: ${paths.output_dir}
+
+min_epochs: 1 # prevents early stopping
+max_epochs: ${epochs}
+
+accelerator: gpu
+devices: 1
+
+log_every_n_steps: 1
+
+# mixed precision for extra speed-up
+# precision: 16
+
+# perform a validation loop every N training epochs
+check_val_every_n_epoch: 1
+
+# set True to to ensure deterministic results
+# makes training slower but gives more reproducibility than just setting seeds
+deterministic: ${deterministic}
+
+# enable checkpointing for saving model states during training
+enable_checkpointing: False
+
+num_sanity_val_steps: 1

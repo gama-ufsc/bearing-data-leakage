@@ -1,0 +1,5 @@
+name: envelope
+_target_: src.data.transforms.signal_representations.get_envelope
+_partial_: True
+cutoff: [500, 10000]
+sampling_rate: 64000

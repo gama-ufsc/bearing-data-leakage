@@ -1,0 +1,2 @@
+_target_: src.data.transforms.collate.MixupCollateFn
+alpha: 0.2

@@ -1,0 +1,67 @@
+# @package _global_
+
+defaults:
+  - /dataset@ottawa: ottawa
+  - override /transform: time
+  - override /dataset/split_function@ottawa.split_function: ottawa
+
+datasets:
+  - ${ottawa}
+
+project: Data-Leakage-Paper-FinalExps
+
+ottawa:
+  split_function:
+    _target_: src.data.data_splits.ottawa_proposed_split
+    _partial_: True
+    n_bearings_per_fault_mode: 2
+    run: ${run}
+    random_state: 42
+
+lr: 1e-4
+batch_size: 128
+num_class: 4
+
+run: 0
+rep: ${transform.name}
+experiment: ottawa_eval_RCRG_${rep}_norm_${normalization_strategy}_std_${std}_lr_${lr}_bs_${batch_size}_run_${run}
+mode: RCRG_ottawa_eval_${std}_${normalization_strategy}_${transform.name}
+
+use_fixed_segments: False
+deterministic: False
+
+segment_length: 42000
+segment_length_eval: 42000
+overlap_pct: 0
+overlap_pct_eval: 0
+segmentation_strategy: full_signal
+segmentation_strategy_eval: overlap
+dataset_multiplier: 20
+
+seed: 0
+random_state: 0
+
+std: 0.7
+crop_size: 42000
+
+epochs: 30
+
+augmentations:
+  pre_repr:
+    train:
+      _target_: torchvision.transforms.v2.Compose
+      transforms:
+        - _target_: src.data.transforms.augmentations.RandomCrop1D
+          crop_size: ${crop_size}
+        - _target_: src.data.transforms.augmentations.RandomGainOnFFT
+          mean: 1
+          std: ${std}
+    test: null
+  post_repr: null
+
+hydra:
+  sweeper:
+    params:
+      transform: time
+      normalization_strategy: none
+      run: 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104

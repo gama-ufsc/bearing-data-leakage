@@ -1,0 +1,3 @@
+_target_: src.models.components.backbone.attention_cnn.Attention1DCNN
+in_channels: 1
+n_class: ${num_class}

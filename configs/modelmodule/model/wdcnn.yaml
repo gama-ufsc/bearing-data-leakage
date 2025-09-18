@@ -1,0 +1,5 @@
+_target_: src.models.components.adapters.source_only.Baseline
+
+defaults:
+  - backbone: wdcnn
+  - class_loss: multilabel

@@ -1,0 +1,9 @@
+eval_metric:
+  _target_: torchmetrics.classification.MultilabelAUROC
+  num_labels: ${num_class}
+  average: macro
+
+
+eval_metric_name: AUROC
+
+additional_metrics: null

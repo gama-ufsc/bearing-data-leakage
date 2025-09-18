@@ -1,0 +1,5 @@
+_target_: src.data.data_splits.generic_proposed_split
+_partial_: True
+n_bearings_per_fault_mode: 2
+run: ${run}
+random_state: 42

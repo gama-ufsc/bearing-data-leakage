@@ -1,0 +1,11 @@
+_target_: src.data.transforms.signal_representations.modulation_spectrogram
+
+_partial_: True
+
+fs: 12000
+
+noverlap: 176
+
+nperseg: 256
+
+stride: 80

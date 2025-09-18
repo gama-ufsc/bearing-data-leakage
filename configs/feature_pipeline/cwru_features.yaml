@@ -1,0 +1,80 @@
+_target_: sklearn.pipeline.Pipeline
+steps:
+- - time_domain
+  - _target_: src.data.feature_engineering.transforms.create_transform
+    metrics:
+      - func:
+          _target_: feature_extraction.metrics.statistics.rms
+          _partial_: true
+      - func:
+          _target_: feature_extraction.metrics.statistics.pk_pk
+          _partial_: true
+        name: pk-pk
+      - func:
+          _target_: feature_extraction.metrics.statistics.kurtosis
+          _partial_: true
+        name: kurt
+      - func:
+          _target_: feature_extraction.metrics.statistics.skewness
+          _partial_: true
+      - func:
+          _target_: feature_extraction.metrics.statistics.crest_factor
+          _partial_: true
+        name: fc
+    representation:
+      name: acceleration
+      func:
+        _target_: feature_extraction.signal_representations.bandpass_filter.bandpass_filter_transform
+        _partial_: true
+      params:
+        signal_column: signal
+        sampling_rate_column: fs
+        cutoff: null
+- - Envelope_500_6000
+  - _target_: src.data.feature_engineering.transforms.create_transform
+    metrics:
+      - name: bpfo
+        func:
+          _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
+          _partial_: true
+        params:
+          harmonics: [1, 2, 3, 4, 5]
+          rpm: True
+          feature_identifier: X
+          X_columns: [rpm, bpfo]
+      - name: bpfi
+        func:
+          _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
+          _partial_: true
+        params:
+          harmonics: [1, 2, 3, 4, 5]
+          rpm: True
+          feature_identifier: X
+          X_columns: [rpm, bpfi]
+      - name: bsf
+        func:
+          _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
+          _partial_: true
+        params:
+          harmonics: [1, 2, 3, 4, 5]
+          rpm: True
+          feature_identifier: X
+          X_columns: [rpm, bsf]
+      - name: ftf
+        func:
+          _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
+          _partial_: true
+        params:
+          harmonics: [1, 2, 3, 4, 5]
+          rpm: True
+          feature_identifier: X
+          X_columns: [rpm, ftf]
+    representation:
+      name: envelope/spectralPeak
+      func:
+        _target_: feature_extraction.signal_representations.envelope.get_envelope
+        _partial_: true
+      params:
+        signal_column: signal
+        sampling_rate_column: fs
+        cutoff: [500, 6000]

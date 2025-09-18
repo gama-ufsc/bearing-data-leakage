@@ -1,0 +1,15 @@
+# @package _global_
+
+defaults:
+  - /dataset@cwru: cwru
+  - override /feature_pipeline: cwru_features
+
+datasets:
+  - ${cwru}
+  
+resample: true
+segment: true
+
+file_path: /data/bearing_datasets/cwru/processed/cwru_feature_store.pkl
+cwru:
+  split_function: null

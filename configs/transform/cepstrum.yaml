@@ -1,0 +1,3 @@
+name: cepstrum
+_target_: src.data.transforms.signal_representations.cepstrum
+_partial_: True

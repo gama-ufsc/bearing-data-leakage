@@ -1,0 +1,4 @@
+name: time
+_target_: src.data.transforms.signal_representations.time
+
+_partial_: True
