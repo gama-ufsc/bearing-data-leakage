@@ -1,8 +1,0 @@
-#HYDRA_FULL_ERROR=1 python src/train.py -m "+experiment/cwru=eval_baseline_noHP0"
-#HYDRA_FULL_ERROR=1 python src/train.py -m "+experiment/cwru=eval_baseline_noHP0onTrain_HP0onTest"
-#HYDRA_FULL_ERROR=1 python src/train.py -m "+experiment/cwru=eval_baseline_HP0onTrain"
-#HYDRA_FULL_ERROR=1 python src/train.py -m "+experiment/cwru=eval_baseline_HP0onBoth"
-#HYDRA_FULL_ERROR=1 python src/train.py -m "+experiment/cwru=eval_baseline_old_approach"
-HYDRA_FULL_ERROR=1 python src/train.py -m "+experiment/cwru=eval_bestcfg_time"
-HYDRA_FULL_ERROR=1 python src/train.py -m "+experiment/cwru=eval_bestcfg_fft"
-#HYDRA_FULL_ERROR=1 python src/train.py -m "+experiment/cwru=eval_bestcfg_cepstrum"

@@ -8,7 +8,7 @@ anonymous: null # enable anonymous logging
 project: ${project} # name of the project where you want this run to be logged
 log_model: False # upload lightning ckpts
 prefix: null  # a string to put at the beginning of metric keys
-entity: dynamox-gama-ufsc # set to name of your wandb team
+entity: ${entity} # set to name of your wandb team
 group: null
 tags: ${tags}
 job_type: null

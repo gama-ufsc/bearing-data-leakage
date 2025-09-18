@@ -4,8 +4,8 @@
 
 defaults:
   - /dataset@cwru: cwru
-  - override /dataset/split_function@cwru.split_function: hp_tuning_cwru
-  - override /transform: fft
+  - override /dataset/split_function@cwru.split_function: evaluation_cwru
+  - override /transform: time
 
 project: Data-Leakage-Paper-FinalExps
 
@@ -16,22 +16,22 @@ rep: ${transform.name}
 
 cwru:
   split_function:
-    _target_: src.data.data_splits.cwru_optimization_split
+    _target_: src.data.data_splits.split_cwru_proposed
     _partial_: True
-    test_fold: ${test_fold}
-    train_side: ${train_side}
-    withHP0: True
+    normal_train_side: ${train_side}
+    random_state: ${random_state}
+    HP0_ontest: True
+    HP0_ontrain: True
 
-test_fold: 1
+
 train_side: FE
-
-lr: 1e-3
-batch_size: 64
+lr: 1e-4
+batch_size: 32
 num_class: 3
 
 run: 0
-experiment: cwru_tuning_rcrg_bestparams_${rep}_ourMTD_norm_${normalization_strategy}_lr_${lr}_bs_${batch_size}_testfold_${test_fold}_side_${train_side}
-mode: rcrg_cwru_tuning_${rep}
+experiment: cwru_eval_rcrg_bestparams_${rep}_ourMTD_norm-${normalization_strategy}_lr_${lr}_bs_${batch_size}_random_${random_state}_side_${train_side}
+mode: rcrg_cwru_eval_${rep}
 
 seed: 0
 random_state: 0
@@ -47,7 +47,7 @@ overlap_pct_eval: 0
 segmentation_strategy_eval: overlap
 
 epochs: 30
-std: 0.3
+std: 0.7
 crop_size: 12000
 
 augmentations:
@@ -66,8 +66,6 @@ augmentations:
 hydra:
   sweeper:
     params:
-      normalization_strategy: global, entry-wise, none
-      lr: 1e-2, 1e-3, 1e-4, 1e-5
-      batch_size: 32, 64, 128, 256
-      test_fold: 1, 2, 3
+      normalization_strategy: none
+      random_state: 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53
       train_side: FE, DE

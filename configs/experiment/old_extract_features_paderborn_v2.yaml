@@ -1,7 +1,0 @@
-# @package _global_
-
-defaults:
-  - override /feature_pipeline: extract_psd
-
-paderborn:
-  split_function: null

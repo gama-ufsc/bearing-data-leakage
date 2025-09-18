@@ -10,9 +10,9 @@ paderborn: null
 datasets:
   - ${ottawa}
 
-cutoff: [5000,10000]
+cutoff: [500,10000]
 
 run_name: feature_engineering_ottawa
 update_feature_store:
-  file_path: "/data/bearing_datasets/ottawa/processed/feature_store.pkl"
-  backup_file_path: "/data/bearing_datasets/ottawa/processed/feature_store_backup.pkl"
+  file_path: data/features/ottawa_feature_store.pkl
+  backup_file_path: data/features/ottawa_feature_store_backup.pkl
