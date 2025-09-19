@@ -1,18 +1,21 @@
 # @package _global_
-
 defaults:
   - /dataset@ottawa: ottawa
   - override /feature_pipeline: ottawa_features
 
-
-paderborn: null
-
 datasets:
   - ${ottawa}
+  
+ottawa:
+  preprocess_function:
+    _target_: src.data.preprocess.preprocess_ottawa
+    _partial_: True
+    resample: ${resample}
+  split_function: null
 
-cutoff: [500,10000]
+segment_size: 42000
 
-run_name: feature_engineering_ottawa
-update_feature_store:
-  file_path: data/features/ottawa_feature_store.pkl
-  backup_file_path: data/features/ottawa_feature_store_backup.pkl
+resample: false
+segment: true
+
+file_path: data/features/ottawa_features.pkl

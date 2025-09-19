@@ -30,7 +30,7 @@ steps:
         signal_column: vibration
         sampling_rate_column: fs
         cutoff: null
-- - Envelope_500_6000
+- - Envelope_500_10000
   - _target_: src.data.feature_engineering.transforms.create_transform
     metrics:
       - name: bpfo
@@ -41,7 +41,7 @@ steps:
           harmonics: [1, 2, 3, 4, 5]
           rpm: True
           feature_identifier: X
-          X_columns: [rpm, bpfo]
+          X_columns: [rotational_speed, bpfo]
       - name: bpfi
         func:
           _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
@@ -50,25 +50,7 @@ steps:
           harmonics: [1, 2, 3, 4, 5]
           rpm: True
           feature_identifier: X
-          X_columns: [rpm, bpfi]
-      - name: bsf
-        func:
-          _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
-          _partial_: true
-        params:
-          harmonics: [1, 2, 3, 4, 5]
-          rpm: True
-          feature_identifier: X
-          X_columns: [rpm, bsf]
-      - name: ftf
-        func:
-          _target_: feature_extraction.metrics.frequency_domain.find_peaks_v2
-          _partial_: true
-        params:
-          harmonics: [1, 2, 3, 4, 5]
-          rpm: True
-          feature_identifier: X
-          X_columns: [rpm, ftf]
+          X_columns: [rotational_speed, bpfi]
     representation:
       name: envelope/spectralPeak
       func:

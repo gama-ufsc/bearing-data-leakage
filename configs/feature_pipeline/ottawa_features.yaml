@@ -27,7 +27,7 @@ steps:
         _target_: feature_extraction.signal_representations.bandpass_filter.bandpass_filter_transform
         _partial_: true
       params:
-        signal_column: signal
+        signal_column: vibration
         sampling_rate_column: fs
         cutoff: null
 - - Envelope_500_6000
@@ -75,6 +75,6 @@ steps:
         _target_: feature_extraction.signal_representations.envelope.get_envelope
         _partial_: true
       params:
-        signal_column: signal
+        signal_column: vibration
         sampling_rate_column: fs
         cutoff: [500, 10000]

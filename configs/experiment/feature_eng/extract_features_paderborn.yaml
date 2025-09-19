@@ -3,8 +3,9 @@
 defaults:
   - override /feature_pipeline: paderborn_features
 
-resample: true
+resample: False
 segment: true
+segment_size: 64000
 
 paderborn:
   split_function: null
