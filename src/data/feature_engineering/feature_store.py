@@ -7,9 +7,7 @@ def update_feature_store(
     """
     Updates the feature store with the new data.
     """
-    # if file_path.endswith('.parquet.gzip'):
-    #    log.info(f"Reading feature store from: {file_path}")
-    #    feature_store = pd.read_parquet(file_path)
+
     if file_path.endswith(".pkl"):
         log.info(f"Reading feature store from: {file_path}")
         try:

@@ -1,7 +1,0 @@
-_target_: src.data.data_splits.synthetic_diversity_split
-_partial_: True
-run: 42
-n_bearings_on_train: 2
-n_samples_on_train: 6400
-n_samples_on_test: 3600
-n_all_train: 64

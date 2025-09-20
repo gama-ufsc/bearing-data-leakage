@@ -1,4 +1,0 @@
-_target_: src.data.data_splits.stratified
-_partial_: True
-random_state: 42
-stratify_col: multiclass_label

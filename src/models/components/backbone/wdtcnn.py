@@ -33,7 +33,7 @@ class WDTCNN(nn.Module):
         def same_padding(kernel_size, stride=1):
             return max(
                 (kernel_size - stride) // 2, 0
-            )  # Ensures correct padding for different stride values
+            ) 
 
         self.name = "WDTCNN"
         print(self.name)
@@ -48,14 +48,13 @@ class WDTCNN(nn.Module):
             ConvBnPool1D(64, 64, kernel_size=3, stride=1, padding=0),
         )
 
-        # Use dummy input to infer the final flattened size
         with torch.no_grad():
-            dummy_input = torch.zeros(1, 1, input_size)  # batch_size=1, channels=1
+            dummy_input = torch.zeros(1, 1, input_size) 
             dummy_output = self.conv_layers(dummy_input)
             self.flattened_size = dummy_output.view(1, -1).shape[1]
 
         self.flatten = nn.Flatten()
-        self.fc = nn.Linear(self.flattened_size, 100)  # Adjuste for input size = 42k
+        self.fc = nn.Linear(self.flattened_size, 100)  # Adjust for input size = 42k
         self.out = nn.Linear(100, n_class)
 
     def forward(self, x):

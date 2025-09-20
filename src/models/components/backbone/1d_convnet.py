@@ -36,11 +36,11 @@ class Conv1DBlock(nn.Module):
         return out
 
 
-class DCASE2018(nn.Module):
+class convnet_1d(nn.Module):
     def __init__(self, n_class=1, **kwargs):
-        super(DCASE2018, self).__init__()
+        super(convnet_1d, self).__init__()
 
-        self.name = "DCASE2018"
+        self.name = "convnet_1d"
         self.initial_conv = nn.Conv1d(1, 48, kernel_size=80, stride=4, padding=40)
         self.initial_bn = nn.BatchNorm1d(48)
         self.initial_relu = nn.ReLU()

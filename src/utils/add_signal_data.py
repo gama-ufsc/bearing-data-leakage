@@ -208,7 +208,6 @@ def add_signal_data_ottawa(
             "/data/bearing_datasets/ottawa/processed/full_dataset.pkl"
         )
         raw_df = raw_df[raw_df["waveform_id"].isin(metadata_df["waveform_id"])]
-        # Sort by waveform_id based on the order in metadata_df
         raw_df["waveform_id"] = pd.Categorical(
             raw_df["waveform_id"], categories=metadata_df["waveform_id"], ordered=True
         )
@@ -250,8 +249,6 @@ def add_signal_data_ottawa(
     waveforms_df = pd.concat([metadata_df, raw_df], axis=1)
 
     if signal_pct < 1.0:
-        # selects a pertentage of the signal. if end_portion is True, it selects the last % portion of the signal, otherwise it selects the first portion.
-        # each signal may have a different length, so we need to calculate the number of samples to select based on the signal length.
         waveforms_df["vibration"] = waveforms_df["vibration"].apply(
             lambda x: x[: int(len(x) * signal_pct)]
             if not end_portion
@@ -259,46 +256,6 @@ def add_signal_data_ottawa(
         )
 
     return waveforms_df
-
-
-def add_signal_to_synthetic_dataset(metadata_df):
-    def generate_signal(bff, sff, fs=1e4, rpm=1800, duration=1, label=0):
-        a = 0.12
-        y = 0.085 * label
-
-        bff = bff * rpm / 60
-
-        n = int(fs * duration)
-        t = np.arange(n) / fs
-        z = np.random.normal(0, 1, n)
-
-        faulty_signature = y * (
-            np.cos(2 * np.pi * bff * t)
-            + 0.5 * np.cos(4 * np.pi * bff * t)
-            + 0.25 * np.cos(6 * np.pi * bff * t)
-        )
-        bearing_signature = a * (
-            np.cos(2 * np.pi * sff * t)
-            + 0.5 * np.cos(4 * np.pi * sff * t)
-            + 0.25 * np.cos(6 * np.pi * sff * t)
-        )
-
-        signal = z + faulty_signature + bearing_signature
-        signal -= np.mean(signal)  # Remove DC offset
-        return signal
-
-    metadata_df["signal"] = metadata_df.apply(
-        lambda row: generate_signal(
-            row["bff"],
-            row["sf"],
-            rpm=row["rpm"],
-            duration=row["duration"],
-            label=row["label"],
-        ),
-        axis=1,
-    )
-
-    return metadata_df
 
 
 def add_signal_data_hust(metadata_df: pd.DataFrame) -> pd.DataFrame:

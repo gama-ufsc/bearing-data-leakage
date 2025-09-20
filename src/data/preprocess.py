@@ -208,8 +208,6 @@ def segment_dataset(
         # Get all other data from the row, excluding the vibration signal itself
         other_data = row.drop(signal_column)
 
-        # Calculate how many full segments of 12000 points we can get
-        # 123000 // 12000 = 10. The last 3000 points will be cropped.
 
         overlap = int(overlap_pct * segment_size)
         stride = segment_size - overlap
@@ -222,15 +220,11 @@ def segment_dataset(
 
         # Create a new row for each full segment
         for i in range(num_segments):
-            #start_index = i * segment_size
-            #end_index = start_index + segment_size
+            
 
             new_segment = original_signal[
                     i * stride : i * stride + segment_size
                 ]
-
-            # Slice the signal to get the 12000-point segment
-            #new_segment = original_signal[start_index:end_index]
 
             # Create a new row by combining the other data with the new segment
             new_row = other_data.to_dict()

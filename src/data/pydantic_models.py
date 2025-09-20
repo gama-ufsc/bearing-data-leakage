@@ -4,14 +4,12 @@ from collections.abc import Callable
 import pandas as pd
 
 # Change here to add a new dataset
-AllowedDataset = Literal["CWRU", "Paderborn", "LVA", "Ottawa", "Synthetic"]
+AllowedDataset = Literal["CWRU", "Paderborn", "LVA", "Ottawa"]
 DATASET_METADATA_PATHS = {
     "CWRU": "/data/bearing_datasets/cwru/processed/files_metadata.bz2",
     "Paderborn": "/data/bearing_datasets/paderborn/processed/files_metadata.bz2",
     "LVA": "/data/bearing_datasets/lva/processed/files_metadata.bz2",
     "Ottawa": "/data/bearing_datasets/ottawa/processed/files_metadata.bz2",
-    # "Generic": "/data/bearing_datasets/generic/processed/files_3.bz2",
-    "Synthetic": "/data/bearing_datasets/synthetic/metadata_df.bz2",
 }
 
 
