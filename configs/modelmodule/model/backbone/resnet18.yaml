@@ -1,0 +1,13 @@
+_target_: src.models.components.backbone.resnet.ModifiedResNet
+
+in_channels: 1
+
+num_class: ${num_class}
+
+resnet_model:
+  _target_: torchvision.models.resnet18
+  weights: ${weights}
+
+pretrained: ${pretrained}
+
+freeze: ${freeze}

@@ -1,0 +1,19 @@
+_target_: src.data.transforms.signal_representations.spectrogram
+
+_partial_: True
+
+fs: 12000
+
+window:
+  _target_: scipy.signal.windows.hann
+  M: 104
+
+overlap: 54
+
+nfft: 452
+
+crop: True
+
+mode: magnitude
+
+scaling: spectrum

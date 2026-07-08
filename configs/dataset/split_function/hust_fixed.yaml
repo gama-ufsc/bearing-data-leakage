@@ -1,0 +1,6 @@
+_target_: src.data.data_splits.hust_fixed_split
+_partial_: True
+test_bearings_per_fault_mode: 2
+train_bearings_per_fault_mode: 2
+run: ${run}
+random_state: 42

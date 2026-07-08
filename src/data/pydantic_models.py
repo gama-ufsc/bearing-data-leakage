@@ -1,0 +1,49 @@
+from pydantic import BaseModel, computed_field, ConfigDict
+from typing import Optional, Literal, Union, List
+from collections.abc import Callable
+import pandas as pd
+
+# Change here to add a new dataset
+AllowedDataset = Literal["CWRU", "Paderborn", "Ottawa", "HUST"]
+DATASET_METADATA_PATHS = {
+    "CWRU": "data/metadata/cwru/files_metadata.bz2",
+    "Paderborn": "data/metadata/paderborn/files_metadata.bz2",
+    "Ottawa": "data/metadata/ottawa/files_metadata.bz2",
+    "HUST": "/data/bearing_datasets/hust/processed/files_metadata.bz2",
+}
+
+
+class BearingDataset(BaseModel):
+    # Pydantic v2 configuration: allow arbitrary types (e.g., pd.DataFrame)
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    name: AllowedDataset
+    add_signal_function: Callable
+    signal_column: str
+    label_column: Union[str, List[str]]
+    split_function: Optional[Callable] = None
+    preprocess_function: Optional[Callable] = None
+    metadata: Optional[pd.DataFrame] = None
+    train: Optional[pd.DataFrame] = None
+    validation: Optional[pd.DataFrame] = None
+    test: Optional[pd.DataFrame] = None
+
+    # Fill metadata_file based on the input from AllowedDataset
+    @computed_field
+    @property
+    def metadata_file(self) -> str:
+        try:
+            return DATASET_METADATA_PATHS[self.name]
+        except KeyError:
+            raise ValueError(
+                f"Dataset {self.name} not added on the DATASET_METADATA_PATHS, please choose from {list(DATASET_METADATA_PATHS.keys())}"
+            )
+
+    def __str__(self):
+        if self.metadata is None:
+            return f"{self.name} dataset without metadata"
+        else:
+            return f"{self.name} dataset with {len(self.metadata)} samples"
+
+    def __repr__(self):
+        return self.__str__()

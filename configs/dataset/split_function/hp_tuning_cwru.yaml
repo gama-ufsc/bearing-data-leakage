@@ -1,0 +1,4 @@
+_target_: src.data.data_splits.cwru_optimization_split
+_partial_: True
+test_fold: ${test_fold}
+train_side: ${train_side}

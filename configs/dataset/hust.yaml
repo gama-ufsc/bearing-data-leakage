@@ -1,0 +1,20 @@
+_target_: src.data.pydantic_models.BearingDataset
+
+defaults:
+  - split_function: null
+
+
+name: HUST
+add_signal_function:
+  _target_: src.utils.add_signal_data.add_signal_data_hust
+  _partial_: True
+signal_column: data
+label_column:
+  - inner
+  - outer
+  - ball
+preprocess_function:
+  _target_: src.data.preprocess.preprocess_hust
+  _partial_: True
+  resample: True
+  out_rate: 42000

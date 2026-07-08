@@ -1,0 +1,23 @@
+_target_: src.data.transforms.signal_representations.cepstrogram
+
+_partial_: True
+
+fs: 12000
+
+noverlap: 176
+
+nperseg: 256
+
+stride: 80
+
+window_name: hann
+
+remove_zero_freq: False
+
+remove_Nyquist_freq: True
+
+remove_mean: False
+
+remove_trend: False
+
+cut_bins: 5

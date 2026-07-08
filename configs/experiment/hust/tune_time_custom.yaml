@@ -1,0 +1,76 @@
+# @package _global_
+
+defaults:
+  - /dataset@hust: hust
+  - override /transform: time
+  - override /dataset/split_function@hust.split_function: hust_fixed
+
+datasets:
+  - ${hust}
+
+hust:
+  split_function:
+    run: ${run}
+    test_bearings_per_fault_mode: ${test_bearings_per_fault_mode}
+    train_bearings_per_fault_mode: ${train_bearings_per_fault_mode}
+
+lr: 1e-4
+batch_size: 128
+num_class: 3
+num_workers: 14
+
+config:
+  - 1
+  - 3
+
+train_bearings_per_fault_mode: ${config[0]}
+test_bearings_per_fault_mode: ${config[1]}
+
+run: 0
+rep: ${transform.name}
+experiment: hust_tuning_time_customsplit${train_bearings_per_fault_mode}:${test_bearings_per_fault_mode}_RCRG_std_${std}_norm_${normalization_strategy}_lr_${lr}_bs_${batch_size}_run_${run}
+mode: hust_tuning_time_customsplit${train_bearings_per_fault_mode}:${test_bearings_per_fault_mode}_RCRG_std_${std}_norm_${normalization_strategy}_lr_${lr}_bs_${batch_size}
+
+use_fixed_segments: False
+deterministic: False
+
+segment_length: 42000
+segment_length_eval: 42000
+overlap_pct: 0
+overlap_pct_eval: 0
+segmentation_strategy: full_signal
+segmentation_strategy_eval: overlap
+dataset_multiplier: 10
+
+seed: 0
+random_state: 0
+
+std: 0.7
+crop_size: 42000
+
+epochs: 25
+
+augmentations:
+  pre_repr:
+    train:
+      _target_: torchvision.transforms.v2.Compose
+      transforms:
+        - _target_: src.data.transforms.augmentations.RandomCrop1D
+          crop_size: ${crop_size}
+        - _target_: src.data.transforms.augmentations.RandomGainOnFFT
+          mean: 1
+          std: ${std}
+    test: null
+  post_repr: null
+
+hydra:
+  sweeper:
+    params:
+      #config: "[1,3], [2,2], [3,1]"
+      config: [1,3]
+      transform: time
+      normalization_strategy: none #, global, entry-wise
+      lr: 1e-3, 1e-4, 1e-5, 1e-2
+      #batch_size: 32, 64, 16, 128, 256
+      batch_size: 128 #, 256
+      run: 0, 1, 2, 3, 4

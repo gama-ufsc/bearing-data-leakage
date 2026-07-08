@@ -1,0 +1,21 @@
+# @package _global_
+defaults:
+  - /dataset@ottawa: ottawa
+  - override /feature_pipeline: ottawa_features
+
+datasets:
+  - ${ottawa}
+  
+ottawa:
+  preprocess_function:
+    _target_: src.data.preprocess.preprocess_ottawa
+    _partial_: True
+    resample: ${resample}
+  split_function: null
+
+segment_size: 42000
+
+resample: false
+segment: true
+
+file_path: data/features/ottawa_features.pkl

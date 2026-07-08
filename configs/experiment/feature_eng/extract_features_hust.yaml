@@ -1,0 +1,22 @@
+# @package _global_
+
+defaults:
+  - /dataset@hust: hust
+  - override /feature_pipeline: hust_features
+
+datasets:
+  - ${hust}
+  
+resample: true
+segment: true
+
+file_path: data/features/hust_features.pkl
+hust:
+  split_function: null
+
+  preprocess_function:
+    _target_: src.data.preprocess.preprocess_hust
+    _partial_: True
+    resample: True
+    out_rate: 42000
+

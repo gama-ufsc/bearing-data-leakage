@@ -1,0 +1,73 @@
+# @package _global_
+
+defaults:
+  - /dataset@cwru: cwru
+  - override /dataset/split_function@cwru.split_function: evaluation_cwru
+  - override /transform: envelope
+
+sampling_rate: 12000
+normalization_strategy: none
+
+datasets:
+  - ${cwru}
+
+cwru:
+  split_function:
+    _target_: src.data.data_splits.cwru_leakage
+    _partial_: True
+    train_group: ${train_group}
+    leakage_split: ${leakage_split}
+
+train_group: A
+leakage_split: no_leakage
+
+rep: ${transform.name}
+
+train_pct: 0.8
+test_pct: 1.0
+
+lr: 1e-4
+batch_size: 16
+num_class: 3
+
+run: 0
+experiment: CWRULeakageNew_Envelope_LeakageSplit_${leakage_split}_80pct_TrainGroup_${train_group}
+mode: Leakage_Exp_Envelope_${leakage_split}
+
+use_fixed_segments: False
+deterministic: False
+
+segment_length: 12000
+segment_length_eval: 12000
+overlap_pct: 0
+overlap_pct_eval: 0
+segmentation_strategy: full_signal
+segmentation_strategy_eval: overlap
+dataset_multiplier: 1 # since each group contains 3 signals, to form a batch of 64 we guarantee 30x multiplier to have enough samples
+
+load_model: True
+model_path: ${paths.data_dir}/artifacts/models/CWRULeakageNew_Envelope_LeakageSplit_no_leakage_80pct_TrainGroup_${train_group}/last.ckpt
+
+seed: 0
+random_state: 0
+num_workers: 12
+
+std: 0.3
+crop_size: 12000
+
+epochs: 30
+
+train_side: DE
+
+augmentations:
+  pre_repr:
+    train: null
+    test: null
+  post_repr: null
+
+
+hydra:
+  sweeper:
+    params:
+      train_group: A, B, C, D, E, F, G, H, I, J, K, L
+      leakage_split: condition

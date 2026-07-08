@@ -1,0 +1,25 @@
+defaults:
+  - _self_
+  - paths: default
+  - dataset@paderborn: paderborn
+  - hydra: default
+  - feature_pipeline: paderborn_features
+
+# Datasets
+datasets:
+  - ${paderborn}
+
+run_name: feature_engineering_paderborn
+
+cols_to_keep:
+  - "waveform_id"
+  - "waveform_id_seg"
+
+task_name: feature_engineering
+
+file_path: /data/bearing_datasets/paderborn/processed/feature_store.pkl
+update_feature_store:
+  _target_: src.data.feature_engineering.feature_store.update_feature_store
+  _partial_: true
+  file_path: ${file_path}
+  backup_file_path: "/data/bearing_datasets/paderborn/processed/feature_store_backup.pkl"

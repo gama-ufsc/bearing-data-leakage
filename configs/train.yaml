@@ -1,0 +1,99 @@
+#### This document describes the base training configuration used in our Hydra framework. ####
+#### In folder `configs/experiment` there are different configurations for each dataset and experiment (e.g. tuning, evaluation, leakage) that override these base parameters as needed. ####
+#### Folders such as `configs/dataset`, `configs/transform`, `configs/modelmodule`, `configs/trainer`, etc. contain modular configuration files that are composed together using Hydra's defaults list below. ####
+### To run an experiment, use the command line to specify the experiment config file, e.g.: ####
+#### `python src/train.py -m "+experiment/ottawa=eval_time"` -> In order for this command to work, make sure the interpreter is set to the project's virtual environment where Hydra and other dependencies are installed. ####
+#### If calling `python` does not work, change for `./venv/bin/python` or similar, depending on your OS and virtual environment location. ####
+
+
+defaults:
+  - _self_
+  - dataset@paderborn: paderborn
+  - transform: time
+  - modelmodule: multilabel_wdcnn
+  - trainer: gpu
+  - hydra: default
+  - paths: default
+  - collate: default
+
+# Hamilton param
+pipeline: deep_learning
+mode: tuning
+
+# Datasets
+datasets:
+  - ${paderborn}
+
+which_model: last
+
+classification_method: multilabel
+# Split params in default dataset config
+# row: 0
+# condition: 0
+# test_size: 0.2
+random_state: 42 # Split random state
+# conditions: [0, 1, 2, 3]
+
+# Pytorch custom dataset params
+# transform (use defaults list)
+# normalization
+normalization_function:
+  _target_: src.data.transforms.scaling.std_scaling
+  _partial_: True
+normalization_strategy: none
+
+# Signal params
+channels_output: 1
+segment_length: 5120 # 11500
+overlap_pct: 0.97
+use_fixed_segments: True
+dataset_multiplier: 1
+segment_length_eval: 5120 # 11500
+overlap_pct_eval: 0.97
+segmentation_strategy_eval: overlap
+segmentation_strategy: overlap
+sampling_rate: 42000
+
+
+augmentation:
+  pre_repr: null # Before transforming (e.g., FFT)
+  post_repr: null # After transforming (e.g., FFT)
+
+# Trainer params
+epochs: 10
+
+# Pytorch DataLoader params
+batch_size: 64
+num_workers: 0
+
+# Model parameters (WDCNN)
+num_class: 2
+pretrained: False
+
+# Optimizer parameters (Adam)
+lr : 1e-4
+
+# ModelModule parameters
+project: YourWandBProject
+entity: YourWandBEntity
+experiment: test # Name of the experiment that will be logged in wandb
+seed: 42
+save_outputs: False
+pretrain_epochs: null
+tags:
+  - Leakage paper
+run_offline: False
+transforms_on_gpu: False
+
+load_model: False
+# model_path (use model path to .ckpt file when load_model is True)
+
+run_name: ${experiment}
+
+## a few data augmentation parameters that are logged in wandb so we can group based on seed
+std: 0
+crop_size: 0
+dropout_rate: 0
+
+deterministic: True
+ensembled_eval: False

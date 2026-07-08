@@ -1,0 +1,15 @@
+eval_metric:
+  _target_: torchmetrics.classification.Accuracy
+  task: multiclass
+  num_classes: ${num_class}
+
+
+eval_metric_name: Accuracy
+
+additional_metrics:
+  - metric:
+      _target_: torchmetrics.classification.AUROC
+      task: multiclass
+      num_classes: ${num_class}
+      average: macro
+    metric_name: AUROC

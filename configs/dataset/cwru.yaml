@@ -1,0 +1,18 @@
+_target_: src.data.pydantic_models.BearingDataset
+
+defaults:
+  - split_function: hp_tuning_cwru
+
+
+name: CWRU
+add_signal_function:
+  _target_: src.utils.add_signal_data.add_signal_data_cwru
+  _partial_: True
+signal_column: signal
+label_column:
+  - inner
+  - outer
+  - ball
+preprocess_function:
+  _target_: src.data.preprocess.preprocess_cwru
+  _partial_: True
