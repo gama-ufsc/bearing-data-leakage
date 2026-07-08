@@ -218,3 +218,22 @@ configs
 ## Contact
 
 For questions, issues, or suggestions related to this repository, please open an issue or contact the authors via e-mail (joaopaulovieirajpv@gmail.com, victor.bauler@gmail.com). 
+
+## Citation
+If you find this work useful, please cite our paper:
+
+```bibtex
+@article{vieira-towards-2026,
+title = {Towards a more realistic evaluation of machine learning models for bearing fault diagnosis},
+journal = {Mechanical Systems and Signal Processing},
+volume = {258},
+pages = {114640},
+year = {2026},
+issn = {0888-3270},
+doi = {https://doi.org/10.1016/j.ymssp.2026.114640},
+url = {https://www.sciencedirect.com/science/article/pii/S0888327026007971},
+author = {João Paulo Vieira and Victor Afonso Bauler and Rodrigo Kobashikawa Rosa and Danilo Silva},
+keywords = {Bearing fault diagnosis, Machine learning, Data leakage, Multi-label classification, Vibration signals},
+}
+```
+
