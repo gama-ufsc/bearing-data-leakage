@@ -1,0 +1,62 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as follows."
+title: "Towards a more realistic evaluation of machine learning models for bearing fault diagnosis"
+
+authors:
+  - family-names: Vieira
+    given-names: João Paulo
+    orcid: https://orcid.org/0009-0002-0971-1610
+  - family-names: Bauler
+    given-names: Victor Afonso
+    orcid: https://orcid.org/0009-0001-4754-9610
+  - family-names: Rosa
+    given-names: Rodrigo Kobashikawa
+    orcid: https://orcid.org/0009-0008-9325-3600
+  - family-names: Silva
+    given-names: Danilo
+    orcid: https://orcid.org/0000-0001-6290-7968
+
+journal: "Mechanical Systems and Signal Processing"
+year: 2026
+volume: 258
+start: 114640
+
+identifiers:
+  - type: doi
+    value: 10.1016/j.ymssp.2026.114640
+
+url: "https://www.sciencedirect.com/science/article/pii/S0888327026007971"
+
+keywords:
+  - Bearing fault diagnosis
+  - Machine learning
+  - Data leakage
+  - Multi-label classification
+  - Vibration signals
+
+abstract:
+  Reliable detection of bearing faults is essential for maintaining the safety
+  and operational efficiency of rotating machinery. While recent advances in
+  machine learning (ML), particularly deep learning, have shown strong
+  performance in controlled settings, many studies fail to generalize to
+  real-world applications due to methodological flaws, most notably data
+  leakage. This paper investigates the issue of data leakage in
+  vibration-based bearing fault diagnosis and its impact on model evaluation.
+  We demonstrate that common dataset partitioning strategies, such as
+  segment-wise and condition-wise splits, introduce spurious correlations that
+  inflate performance metrics. To address this, we propose a rigorous,
+  leakage-free evaluation methodology centered on bearing-wise data
+  partitioning, ensuring no overlap between the physical components used for
+  training and testing. Additionally, we reformulate the classification task as
+  a multi-label problem, enabling the detection of co-occurring fault types and
+  the use of prevalence-independent metrics based on the ROC curve. Beyond
+  preventing leakage, we also examine the effect of dataset diversity on
+  generalization, showing that the number of unique training bearings is a
+  decisive factor for achieving robust performance. We evaluate our methodology
+  on four widely adopted datasets: Case Western Reserve University (CWRU),
+  Paderborn University (PU), University of Ottawa (UORED-VAFCLS), and Hanoi
+  University of Science and Technology (HUST bearing). This study highlights
+  the importance of leakage-aware evaluation protocols and provides practical
+  guidelines for dataset partitioning, model selection, and validation,
+  fostering the development of more trustworthy ML systems for industrial fault
+  diagnosis applications.
